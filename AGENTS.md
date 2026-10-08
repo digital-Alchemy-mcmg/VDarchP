@@ -1,3 +1,46 @@
+# VDarchP — Current Operator Directive (2026-10-08)
+
+This section supersedes conflicting historical instructions below.
+
+## Deployment objective
+Make the VDarchP Vite/React application fully verified for Vercel production deployment from `main`. Verification is evidence-based; do not equate no new Codex suggestions with readiness.
+
+## Authority
+- **Operator:** Sole acceptance and merge/deployment decision authority. All changes require Operator inspection before merge.
+- **Jules:** Only authorized application-code author. Inspect, repair, test, and create local work products. Do not push, merge, deploy, or edit governance contracts. Provide receipts and changes to the authorized instruction publisher for any required remote persistence.
+- **ChatGPT initial instruction publisher:** Authorized solely to publish these governing instructions and task documentation to GitHub in this instance. No application-code modifications, merges, or deployments.
+- **Verifier A, :15 hourly America/New_York:** Read-only independent technical verifier. Inspect Jules' output, code, build/TypeScript checks, Vercel readiness, and Codex review signals.
+- **Verifier B, :40 hourly America/New_York:** Read-only independent verifier. Continue the verification loop, reconcile earlier verified findings and work progress, track missing receipts and prevent ownerless stalls.
+- **Codex:** Independent code review signals; these must be inspected, deduplicated, prioritized by deployment impact, and assigned in Jules' workload. If there are no new code suggestions, flag that to the Operator in chat. Do not assume all suggestions are correct.
+- **Other legacy agents/runners:** No authorized repository writing under this directive. Legacy rules that grant other agents writer/merger authority are revoked. A document cannot revoke technical GitHub access; permissions require independent enforcement.
+
+## Jules startup and execution
+1. Read this file, root README, CHECKPOINTS.md and the latest relevant branch/PR. Confirm current tree and prior completed work.
+2. `main` is the intended Vercel production target. PR #1 and its Jules development branch are not yet accepted into main.
+3. Maintain a bounded workload ledger: unique item, origin (build/verification/Codex), evidence URL and SHA, affected file, observed behavior, required fix, severity, acceptance test, owner and state.
+4. Execute only authorized repairs, starting with verified blockers to Vercel production readiness. Never invent semantics.
+5. Run dependency installation, TypeScript checks, production build, and applicable application tests. Inspect routing, assets, Vercel project configuration and required environment variables. Record exact commands and results.
+6. Report: STATUS, TASK, ROLE, BRANCH, HEAD or local reference, FILES_CHANGED, CHECKS, RESULT, BLOCKERS, CODEX_FINDINGS, NEXT_OWNER and NEXT_ACTION. Provide receipts to verifiers and Operator.
+7. Do not push or merge. All review or repair handoffs must preserve ownership; if blocked, state the exact prerequisite and carry independently actionable work forward.
+
+## Verification and non-stall loop
+- Both ChatGPT scheduled verifiers are read-only and run at :15 and :40 every hour in America/New_York.
+- Each independently checks the latest available evidence, incorporates Codex review findings as actionable Jules work items, and tracks unresolved items across successive reports.
+- Reports are not proof Jules has received a work item. If a shared delivery channel is unavailable, mark HANDOFF_PENDING and alert the Operator; never fabricate progress.
+- No silent stops: report BLOCKED with evidence and next owner, and continue independent authorized checks on subsequent runs.
+- Neither verifier may write, commit, push, open/update PRs, merge, or deploy.
+- No production deployment or merge until Operator inspection and explicit authorization. If there are no new Codex code suggestions in the inspected scope, explicitly report that fact in chat.
+
+## Acceptance checkpoints
+- Verified production-intended source tree for `main`.
+- Successful dependency installation, TypeScript verification and production build.
+- Confirmed Vercel project/root/framework/build/output/environment settings and relevant SPA route behavior.
+- Verified essential application behavior, critical regression checks, and zero outstanding critical deployment blockers.
+- Independent acceptance evidence, with identified commits and tests; Operator approval before any merge or deployment.
+
+---
+## Historical execution contract (retained; superseded wherever conflicting)
+
 # AGENTS.md — VDarchP EXECUTION CONTRACT
 
 ## PURPOSE
