@@ -1,0 +1,10 @@
+# Checkpoints directory for evidence files
+# Generated automatically by Jewels and Runner verification
+
+Each instruction set creates evidence files here:
+- Intake logs (npm install, build output)
+- Defect inventory and repair logs
+- Push logs and PR links
+- Handoff receipts
+
+Runner uses these files to verify progress and flag discrepancies.
