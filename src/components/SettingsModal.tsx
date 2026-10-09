@@ -17,6 +17,7 @@ interface SettingsModalProps {
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, state }) => {
+  if (!isOpen) return null;
 
   const handleClearAll = () => {
     if (confirm('Are you sure you want to completely reset the dashboard? All local DAG state will be cleared.')) {
@@ -34,6 +35,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, s
             <h2 className="text-base font-bold text-white">Dashboard Settings</h2>
           </div>
           <button
+            aria-label="Close settings"
             onClick={onClose}
             className="text-slate-400 hover:text-white p-1 rounded transition-colors"
           >

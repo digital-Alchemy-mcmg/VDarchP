@@ -54,7 +54,7 @@ export function parseMermaidToDAG(source: string): IngestionProposal {
   // id>flag] -> external
   // id[rect] -> component
   // id(rounded) -> service
-  const nodeDefRegex = /([a-zA-Z0-9_.-]+)\s*(\[\(|\{\{|\(\[|\[\[|\[\(|[\(\[\{\>])\s*([^\]\)\}\>]+)\s*(\]\)|\]\]|\)\/|\)\/|\}\}|\)\]|\)\)|[\]\)\}\>])/g;
+  const nodeDefRegex = /([a-zA-Z0-9_][a-zA-Z0-9_.-]*)\s*(\[\(|\{\{|\(\[|\[\[|\(\(|[\(\[\{\>])\s*([^\]\)\}\>]+)\s*(\]\)|\]\]|\}\}|\)\]|\)\)|[\]\)\}\>])/g;
 
   // Edge patterns:
   // A --> B
@@ -63,7 +63,7 @@ export function parseMermaidToDAG(source: string): IngestionProposal {
   // A -.-> B
   // A ==> B
   // A --- B
-  const edgeRegex = /([a-zA-Z0-9_.-]+)\s*(?:(?:-->|==>|-\.->|---|--)\s*(?:\|([^|]+)\|)?\s*|(?:--\s*([^->]+)\s*-->))\s*([a-zA-Z0-9_.-]+)/g;
+  const edgeRegex = /([a-zA-Z0-9_][a-zA-Z0-9_.-]*)\s*(?:(?:--\s+([^|>]+?)\s+-->)\s*|(?:-->|==>|-\.->|---|--)\s*(?:\|([^|]+)\|)?\s*)(?=([a-zA-Z0-9_][a-zA-Z0-9_.-]*))/g;
 
   for (const line of lines) {
     const trimmed = line.trim();
@@ -78,17 +78,17 @@ export function parseMermaidToDAG(source: string): IngestionProposal {
       continue;
     }
 
-    // Check node definitions
+    // Strip inline definitions before reading edges, preserving IDs and labels.
+    // An arrow's hyphens must never match a node ID with an external '>' shape.
     let match: RegExpExecArray | null;
-    while ((match = nodeDefRegex.exec(trimmed)) !== null) {
-      const rawId = match[1].trim();
-      const openBracket = match[2];
-      const label = match[3].trim();
-      nodeMap.set(rawId, { label, shape: openBracket });
-    }
+    const wiring = trimmed.replace(nodeDefRegex, (_definition, rawId, shape, rawLabel) => {
+      const label = rawLabel.trim().replace(/^"(.*)"$/, '$1');
+      nodeMap.set(rawId, { label, shape });
+      return rawId;
+    });
 
     // Check edges
-    while ((match = edgeRegex.exec(trimmed)) !== null) {
+    while ((match = edgeRegex.exec(wiring)) !== null) {
       const src = match[1].trim();
       const edgeLabel = match[2] || match[3] || undefined;
       const tgt = match[4].trim();
@@ -282,7 +282,7 @@ export function parseTextToDAG(source: string): IngestionProposal {
     if (!trimmed || trimmed.startsWith('#')) continue;
 
     // Pattern: NodeA -> NodeB or NodeA --> NodeB (optional: [label])
-    const arrowMatch = trimmed.match(/([a-zA-Z0-9_\s-]+)(?:->|-->|=>|to)\s*([a-zA-Z0-9_\s-]+)(?:\s*\[(.*?)\]|\s*\((.*?)\))?/i);
+    const arrowMatch = trimmed.match(/([a-zA-Z0-9_\s-]+?)\s*(?:-->|->|=>|\bto\b)\s*([a-zA-Z0-9_\s-]+)(?:\s*\[(.*?)\]|\s*\((.*?)\))?/i);
     if (arrowMatch) {
       const srcName = arrowMatch[1].trim().replace(/^[-*•\d.]+\s*/, '');
       const tgtName = arrowMatch[2].trim().replace(/^[-*•\d.]+\s*/, '');

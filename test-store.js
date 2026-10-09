@@ -1,25 +1,3 @@
-import { modelStore } from './src/store/ModelStore.ts';
-
-// Mock localStorage for Node environment
-global.localStorage = {
-  getItem: () => null,
-  setItem: () => {}
-};
-
-let previousState = modelStore.getState();
-let isStateChanged = false;
-
-modelStore.subscribe((newState) => {
-  if (newState !== previousState) {
-    isStateChanged = true;
-  }
-});
-
-modelStore.setPhase('P1_INGEST');
-
-if (isStateChanged) {
-  console.log('SUCCESS: State reference changed. Re-render will trigger.');
-} else {
-  console.error('ERROR: State reference did not change. Re-render will NOT trigger.');
-  process.exit(1);
-}
+// Backward-compatible entry point for the asserted store regressions.
+// Run with: node --import tsx test-store.js (or npm test for the full suite).
+import './tests/store.test.ts';

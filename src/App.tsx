@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useSyncExternalStore, useRef } from 'react';
 import { modelStore } from './store/ModelStore';
-import { ModelStoreState } from './types/dag';
 import { Header } from './components/Header';
 import { P0EmptyDropzone } from './components/P0EmptyDropzone';
 import { P1IngestPreview } from './components/P1IngestPreview';
@@ -12,8 +11,11 @@ import { ExportModal } from './components/ExportModal';
 import { SettingsModal } from './components/SettingsModal';
 import { GripHorizontal } from 'lucide-react';
 
+const subscribe = (listener: () => void) => modelStore.subscribe(listener);
+const getSnapshot = () => modelStore.getState();
+
 export default function App() {
-  const [state, setState] = useState<ModelStoreState>(() => modelStore.getState());
+  const state = useSyncExternalStore(subscribe, getSnapshot);
 
   // Modal visibility states
   const [showLockWarning, setShowLockWarning] = useState(false);
@@ -23,13 +25,6 @@ export default function App() {
   // Split-pane resizer for P3 (Upper Viewport vs Lower Inspector)
   const [splitHeightPct, setSplitHeightPct] = useState(60); // 60% Upper Canvas, 40% Lower Inspector
   const isDraggingSplitter = useRef(false);
-
-  useEffect(() => {
-    const unsubscribe = modelStore.subscribe((newState) => {
-      setState(newState);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Splitter mouse handlers
   const handleSplitterMouseDown = (e: React.MouseEvent) => {

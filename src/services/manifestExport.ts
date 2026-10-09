@@ -1,8 +1,10 @@
 import { ArchitectureEnvelope, DAGGraph, DAGNode } from '../types/dag';
 import { analyzeTopology } from './dagLayout';
+import { sha256 } from '@noble/hashes/sha2.js';
+import { bytesToHex } from '@noble/hashes/utils.js';
 
 /**
- * Computes simple deterministic hash string for manifest integrity
+ * SHA-256 of the canonical topology payload (not annotations or the full file).
  */
 export function computeManifestChecksum(graph: DAGGraph): string {
   const content = JSON.stringify({
@@ -13,13 +15,7 @@ export function computeManifestChecksum(graph: DAGGraph): string {
     edgePairs: graph.edges.map((e) => `${e.source}->${e.target}`).sort(),
   });
 
-  let hash = 0;
-  for (let i = 0; i < content.length; i++) {
-    const char = content.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
-  }
-  return `sha256:0x${Math.abs(hash).toString(16).padStart(8, '0')}`;
+  return `sha256:${bytesToHex(sha256(new TextEncoder().encode(content)))}`;
 }
 
 /**

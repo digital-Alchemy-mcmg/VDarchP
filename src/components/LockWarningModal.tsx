@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AlertTriangle, Lock, ShieldAlert, X } from 'lucide-react';
 import { modelStore } from '../store/ModelStore';
 
@@ -10,13 +10,22 @@ interface LockWarningModalProps {
 
 export const LockWarningModal: React.FC<LockWarningModalProps> = ({ isOpen, onClose, onConfirm }) => {
   const [confirmCheckbox, setConfirmCheckbox] = useState(false);
+  const [lockError, setLockError] = useState<string | null>(null);
+  useEffect(() => {
+    setConfirmCheckbox(false);
+    setLockError(null);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const handleCommitLock = () => {
     if (!confirmCheckbox) return;
-    modelStore.lockTopologyForever();
-    onConfirm();
+    try {
+      modelStore.lockTopologyForever();
+      onConfirm();
+    } catch (error) {
+      setLockError(error instanceof Error ? error.message : String(error));
+    }
   };
 
   return (
@@ -69,6 +78,8 @@ export const LockWarningModal: React.FC<LockWarningModalProps> = ({ isOpen, onCl
             I understand that locking permanently freezes graph topology forever.
           </span>
         </label>
+
+        {lockError && <p role="alert" className="text-sm text-rose-300 mb-4">{lockError}</p>}
 
         {/* Actions */}
         <div className="flex items-center justify-end space-x-3">

@@ -10,7 +10,7 @@ import {
   NodeStatus,
   NodeType,
 } from '../types/dag';
-import { computeDAGLayout } from '../services/dagLayout';
+import { analyzeTopology, computeDAGLayout } from '../services/dagLayout';
 
 const STORAGE_KEY = 'spa_dag_canvas_dashboard_v1';
 
@@ -38,12 +38,14 @@ export type Listener = (state: ModelStoreState) => void;
 
 class TransactionalModelStore {
   private state: ModelStoreState;
+  private snapshot: ModelStoreState;
   private listeners: Set<Listener> = new Set();
   private isTransactionActive = false;
   private transactionSnapshot: DAGGraph | null = null;
 
   constructor() {
     this.state = this.loadInitialState();
+    this.snapshot = structuredClone(this.state);
   }
 
   private loadInitialState(): ModelStoreState {
@@ -105,7 +107,7 @@ class TransactionalModelStore {
   }
 
   public getState(): ModelStoreState {
-    return this.state;
+    return this.snapshot;
   }
 
   public subscribe(listener: Listener): () => void {
@@ -117,9 +119,11 @@ class TransactionalModelStore {
 
   private notify(): void {
     this.persistState();
-    const newState = { ...this.state };
+    // Never expose the mutable working state to React. Nested graph references
+    // must also change so memoized canvas nodes and lineage are refreshed.
+    this.snapshot = structuredClone(this.state);
     for (const listener of this.listeners) {
-      listener(newState);
+      listener(this.snapshot);
     }
   }
 
@@ -204,12 +208,28 @@ class TransactionalModelStore {
 
   // --- Phase Lifecycle Actions ---
 
+  private assertValidTopology(nodes: DAGNode[], edges: DAGEdge[]): void {
+    const ids = nodes.map(node => node.id);
+    const known = new Set(ids);
+    if (known.size !== ids.length) throw new Error('Node IDs must be unique.');
+    if (edges.some(edge => !known.has(edge.source) || !known.has(edge.target))) {
+      throw new Error('Both edge endpoints must exist.');
+    }
+    if (!analyzeTopology(ids, edges).isDAG) {
+      throw new Error('Cycle detected: topology must remain a DAG.');
+    }
+  }
+
   public setPhase(phase: LifecyclePhase): void {
+    if (this.state.graph.isLocked && phase !== 'P3_LOCKED_ANNOTATED') {
+      this.assertTopologyNotFrozen('setPhase');
+    }
     this.state.phase = phase;
     this.notify();
   }
 
   public setProposal(proposal: IngestionProposal): void {
+    this.assertTopologyNotFrozen('setProposal');
     this.state.proposal = proposal;
     this.state.phase = 'P1_INGEST';
     this.state.error = null;
@@ -218,6 +238,7 @@ class TransactionalModelStore {
 
   public acceptProposal(): void {
     if (!this.state.proposal) return;
+    this.assertTopologyNotFrozen('acceptProposal');
     this.pushHistory();
     this.state.graph = JSON.parse(JSON.stringify(this.state.proposal.graph));
     this.state.phase = 'P2_CONFIRM_EDIT';
@@ -229,7 +250,13 @@ class TransactionalModelStore {
    * Transition to P3: Permanently lock topology forever
    */
   public lockTopologyForever(): void {
-    this.pushHistory();
+    if (this.state.graph.isLocked) return;
+    this.assertValidTopology(this.state.graph.nodes, this.state.graph.edges);
+    // Pre-lock history and transaction snapshots must never restore topology.
+    this.state.history = [];
+    this.state.future = [];
+    this.isTransactionActive = false;
+    this.transactionSnapshot = null;
     this.state.graph.isLocked = true;
     this.state.graph.lockedAt = new Date().toISOString();
     this.state.graph.version += 1;
@@ -243,12 +270,12 @@ class TransactionalModelStore {
 
   public addNode(node: Omit<DAGNode, 'position'>, position?: { x: number; y: number }): void {
     this.assertTopologyNotFrozen(`addNode(${node.id})`);
-    this.pushHistory();
 
     // Ensure unique ID
     if (this.state.graph.nodes.some((n) => n.id === node.id)) {
       throw new Error(`Node with ID '${node.id}' already exists.`);
     }
+    this.pushHistory();
 
     const newNode: DAGNode = {
       ...node,
@@ -256,7 +283,7 @@ class TransactionalModelStore {
     };
 
     this.state.graph.nodes.push(newNode);
-    this.recomputeLayout();
+    this.applyLayout();
     this.notify();
   }
 
@@ -274,7 +301,7 @@ class TransactionalModelStore {
       this.state.selectedNodeId = null;
     }
 
-    this.recomputeLayout();
+    this.applyLayout();
     this.notify();
   }
 
@@ -283,7 +310,6 @@ class TransactionalModelStore {
     updates: { id?: string; name?: string; type?: NodeType; tier?: DAGNode['tier'] }
   ): void {
     this.assertTopologyNotFrozen(`updateNodeIdentity(${nodeId})`);
-    this.pushHistory();
 
     const node = this.state.graph.nodes.find((n) => n.id === nodeId);
     if (!node) return;
@@ -295,6 +321,9 @@ class TransactionalModelStore {
       if (this.state.graph.nodes.some((n) => n.id === newId)) {
         throw new Error(`ID '${newId}' already taken by another node.`);
       }
+    }
+    this.pushHistory();
+    if (newId !== oldId) {
       node.id = newId;
 
       // Update edges referencing this node
@@ -312,13 +341,12 @@ class TransactionalModelStore {
     if (updates.type !== undefined) node.type = updates.type;
     if (updates.tier !== undefined) node.tier = updates.tier;
 
-    this.recomputeLayout();
+    this.applyLayout();
     this.notify();
   }
 
   public mergeNodes(sourceId: string, targetId: string): void {
     this.assertTopologyNotFrozen(`mergeNodes(${sourceId} -> ${targetId})`);
-    this.pushHistory();
 
     const sourceNode = this.state.graph.nodes.find((n) => n.id === sourceId);
     const targetNode = this.state.graph.nodes.find((n) => n.id === targetId);
@@ -326,6 +354,16 @@ class TransactionalModelStore {
     if (!sourceNode || !targetNode) {
       throw new Error('Both nodes must exist to perform merge.');
     }
+    if (sourceId === targetId) throw new Error('Cannot merge a node into itself.');
+    const candidateEdges = this.state.graph.edges.map(edge => ({
+      ...edge,
+      source: edge.source === sourceId ? targetId : edge.source,
+      target: edge.target === sourceId ? targetId : edge.target,
+    })).filter(edge => edge.source !== edge.target);
+    this.assertValidTopology(
+      this.state.graph.nodes.filter(node => node.id !== sourceId), candidateEdges
+    );
+    this.pushHistory();
 
     // Merge checklists & artifacts
     targetNode.artifacts.push(...sourceNode.artifacts);
@@ -356,13 +394,12 @@ class TransactionalModelStore {
       this.state.selectedNodeId = targetId;
     }
 
-    this.recomputeLayout();
+    this.applyLayout();
     this.notify();
   }
 
   public addEdge(edge: Omit<DAGEdge, 'id'>): void {
     this.assertTopologyNotFrozen(`addEdge(${edge.source} -> ${edge.target})`);
-    this.pushHistory();
 
     if (edge.source === edge.target) {
       throw new Error('Self-referencing loops are invalid in a DAG.');
@@ -374,6 +411,10 @@ class TransactionalModelStore {
     if (existing) {
       throw new Error('Edge already exists.');
     }
+    this.assertValidTopology(this.state.graph.nodes, [
+      ...this.state.graph.edges, { id: 'candidate', ...edge },
+    ]);
+    this.pushHistory();
 
     const newEdge: DAGEdge = {
       id: `edge-${edge.source}-${edge.target}`.toLowerCase(),
@@ -381,7 +422,7 @@ class TransactionalModelStore {
     };
 
     this.state.graph.edges.push(newEdge);
-    this.recomputeLayout();
+    this.applyLayout();
     this.notify();
   }
 
@@ -390,7 +431,7 @@ class TransactionalModelStore {
     this.pushHistory();
 
     this.state.graph.edges = this.state.graph.edges.filter((e) => e.id !== edgeId);
-    this.recomputeLayout();
+    this.applyLayout();
     this.notify();
   }
 
@@ -400,9 +441,9 @@ class TransactionalModelStore {
     nodeId: string,
     updater: (node: DAGNode) => void
   ): void {
-    this.pushHistory();
     const node = this.state.graph.nodes.find((n) => n.id === nodeId);
     if (!node) return;
+    this.pushHistory();
 
     updater(node);
     this.state.graph.updatedAt = new Date().toISOString();
@@ -545,14 +586,23 @@ class TransactionalModelStore {
   }
 
   public updateSettings(updates: Partial<ModelStoreState['settings']>): void {
+    const previousDirection = this.state.settings.layoutDirection;
     this.state.settings = {
       ...this.state.settings,
       ...updates,
     };
+    if (this.state.settings.layoutDirection !== previousDirection) {
+      this.applyLayout();
+    }
     this.notify();
   }
 
   public recomputeLayout(): void {
+    this.applyLayout();
+    this.notify();
+  }
+
+  private applyLayout(): void {
     const res = computeDAGLayout(
       this.state.graph.nodes,
       this.state.graph.edges,
