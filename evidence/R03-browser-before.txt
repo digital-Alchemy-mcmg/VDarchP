@@ -1,0 +1,43 @@
+
+> react-example@0.0.0 test:browser
+> playwright test --grep R03:
+
+[WebServer] (node:10536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:10549) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:10572) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error (9.6s)
+
+
+  1) tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "Cycle detected"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      64 |   await page.getByRole('checkbox').check();
+      65 |   await page.getByRole('button', { name: 'Freeze & Lock Topology Forever' }).click();
+    > 66 |   await expect(page.getByRole('alert')).toContainText('Cycle detected');
+         |                                         ^
+      67 |   await expect(page.getByText('MUTABLE TOPOLOGY', { exact: true })).toBeVisible();
+      68 |   await page.getByRole('button', { name: 'Cancel (Keep Mutable)' }).click();
+      69 |   expect(errors).toEqual([]);
+        at /home/hatch/workspace/vdarchp-codex/tests/browser/app.spec.js:66:41
+
+    Error Context: test-results/app-R03-cyclic-import-lock-d249d-does-not-throw-a-page-error/error-context.md
+
+  1 failed
+    tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error 

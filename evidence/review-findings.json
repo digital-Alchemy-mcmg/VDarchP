@@ -1,0 +1,50 @@
+[
+  {
+    "local_id": "R01",
+    "path": "src/components/SettingsModal.tsx",
+    "line": 28,
+    "source_url": "https://github.com/digital-Alchemy-mcmg/VDarchP/pull/1#discussion_r4201758179",
+    "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Respect the settings modal's open state**\n\n`App` mounts this component on every render, but `isOpen` is never checked before rendering the fixed full-screen overlay. Consequently the initial `showSettingsModal=false` state still displays a blocking settings dialog over P0, and clicking Close cannot dismiss it because the component continues rendering.\n\nUseful? React with 👍 / 👎.",
+    "is_resolved": false
+  },
+  {
+    "local_id": "R02",
+    "path": "src/store/ModelStore.ts",
+    "line": 178,
+    "source_url": "https://github.com/digital-Alchemy-mcmg/VDarchP/pull/1#discussion_r4201758187",
+    "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Preserve topology locking across undo**\n\nLocking pushes an unlocked graph into history, and this assignment restores that snapshot with `isLocked: false` while leaving the phase unchanged. The Header then sees an unlocked graph, permits selecting P2, and structural methods no longer reject edits, so a user can undo a confirmed “permanent” lock and alter the same topology.\n\nUseful? React with 👍 / 👎.",
+    "is_resolved": false
+  },
+  {
+    "local_id": "R03",
+    "path": "src/store/ModelStore.ts",
+    "line": 383,
+    "source_url": "https://github.com/digital-Alchemy-mcmg/VDarchP/pull/1#discussion_r4201758193",
+    "body": "**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  Reject edges that introduce a cycle**\n\nThe P2 Connect Edge flow can add a reverse dependency (for example, after `A -> B`, add `B -> A`), because this method only rejects self-loops and duplicates. The graph can then be locked despite no acyclicity check in the lock transition, leaving a purported DAG whose exported topological order is incomplete and whose layout falls back to cycle handling.\n\nUseful? React with 👍 / 👎.",
+    "is_resolved": false
+  },
+  {
+    "local_id": "R04",
+    "path": "src/services/manifestExport.ts",
+    "line": 22,
+    "source_url": "https://github.com/digital-Alchemy-mcmg/VDarchP/pull/1#discussion_r4201758199",
+    "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Use an actual SHA-256 digest**\n\nThis is a 32-bit Java-style rolling hash, not SHA-256, but its result is labeled `sha256` and the export UI presents the manifest as SHA-256 verified. Distinct graph topologies can therefore share this short digest, so consumers relying on the advertised checksum receive no cryptographic integrity guarantee.\n\nUseful? React with 👍 / 👎.",
+    "is_resolved": false
+  },
+  {
+    "local_id": "R05",
+    "path": "src/services/parser.ts",
+    "line": 285,
+    "source_url": "https://github.com/digital-Alchemy-mcmg/VDarchP/pull/1#discussion_r4201758206",
+    "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Parse documented Markdown arrows without corrupting IDs**\n\nFor the documented `NodeA --> NodeB` syntax, the greedy first capture consumes the first two hyphens and the earlier `->` alternative matches the remainder, producing a source name such as `NodeA -`. Dropped `.md` files are routed to this parser unless they contain a Mermaid header, so ordinary Markdown dependency specs produce incorrect node IDs and edges.\n\nUseful? React with 👍 / 👎.",
+    "is_resolved": false
+  },
+  {
+    "local_id": "R06",
+    "path": "src/store/ModelStore.ts",
+    "line": 551,
+    "source_url": "https://github.com/digital-Alchemy-mcmg/VDarchP/pull/1#discussion_r4201758209",
+    "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Recompute positions when changing layout direction**\n\nChanging the settings only stores the new direction; it never calls `recomputeLayout`. For an already ingested graph, nodes retain their old top-down coordinates while `DAGCanvas` switches its edge routing to LR (or vice versa), so the advertised orientation control does not lay out the graph in the selected orientation and can render connections incorrectly.\n\nUseful? React with 👍 / 👎.",
+    "is_resolved": false
+  }
+]

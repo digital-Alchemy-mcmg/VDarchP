@@ -1,0 +1,31 @@
+{
+  "result": {
+    "projects": [
+      {
+        "id": "prj_OqcAuOwLeK67FOtkQWsSfg5XDm2q",
+        "name": "political-ideology-map-3d",
+        "accountId": "team_2SZpcK97c6WAA9iTPMrwsbPh",
+        "createdAt": 1783839615787,
+        "updatedAt": 1787956311601
+      },
+      {
+        "id": "prj_cXbcgfPKecmHQwXl1TtOwnVr09He",
+        "name": "aimts-legal-maze-engine",
+        "accountId": "team_2SZpcK97c6WAA9iTPMrwsbPh",
+        "createdAt": 1783936704066,
+        "updatedAt": 1783936728467
+      },
+      {
+        "id": "prj_doH0MTkeSejQnUSs22nbCbVTRfqg",
+        "name": "remix--kinetic-portfolio",
+        "accountId": "team_2SZpcK97c6WAA9iTPMrwsbPh",
+        "createdAt": 1783851371783,
+        "updatedAt": 1783851399930
+      }
+    ],
+    "pagination": {
+      "count": 3,
+      "prev": 1787956311601
+    }
+  }
+}

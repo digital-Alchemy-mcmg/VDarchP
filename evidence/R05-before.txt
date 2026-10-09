@@ -1,0 +1,41 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ R04: checksum is a real SHA-256 of the established canonical topology payload (7.057143ms)
+✖ R05: Markdown arrows preserve source IDs and word "to" does not split names (6.382309ms)
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (33.348916ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (2.108809ms)
+✔ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (3.224966ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 340.178298
+
+✖ failing tests:
+
+test at tests/services.test.ts:1:982
+✖ R05: Markdown arrows preserve source IDs and word "to" does not split names (6.382309ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'COMP-NODEA_-',
+  -   'COMP-NODEA',
+      'COMP-NODEB'
+    ]
+  
+      at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/services.test.ts:25:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,38 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ R04: checksum is a real SHA-256 of the established canonical topology payload (6.991525ms)
+✔ R05: Markdown arrows preserve source IDs and word "to" does not split names (3.970425ms)
+✖ R07: starter Mermaid diagrams retain every edge and inline node definition (6.730593ms)
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (30.668148ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (1.925012ms)
+✔ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (2.835971ms)
+✔ R06: layout orientation recomputes node positions and notifies once (1.456178ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 362.106385
+
+✖ failing tests:
+
+test at tests/services.test.ts:1:1762
+✖ R07: starter Mermaid diagrams retain every edge and inline node definition (6.730593ms)
+  AssertionError [ERR_ASSERTION]: ecommerce must retain all documented connections
+  
+  11 !== 12
+  
+      at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/services.test.ts:40:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 12,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

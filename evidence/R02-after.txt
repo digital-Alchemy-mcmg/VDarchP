@@ -1,0 +1,14 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (39.704725ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (3.680439ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 295.52662

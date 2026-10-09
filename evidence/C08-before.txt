@@ -1,0 +1,80 @@
+✖ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (7.17446ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18.506555
+
+✖ failing tests:
+
+test at tests/store.test.ts:1:1106
+✖ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (7.17446ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  {
+    envelope: {
+      complianceScopes: [
+        'SOC2 Type II',
+        'ISO 27001',
+        'PCI-DSS Tier 1'
+      ],
+      estimatedThroughputRps: 2500,
+      maxLatencySlaMs: 100,
+      networkEgressBudgetGb: 500,
+      resilienceTier: 'Active-Active Multi-Region',
+      securityEnclaveLevel: 'Confidential'
+    },
+    error: null,
+    filterStatus: 'ALL',
+    future: [],
+    graph: {
+      description: 'Awaiting ingestion or initialization.',
+      edges: [],
+      id: 'dag-initial',
+      isLocked: false,
+      nodes: [],
+      title: 'Untitled Architecture DAG',
+      updatedAt: '2026-10-09T03:34:22.413Z',
+      version: 1
+    },
+    history: [],
+    hoveredNodeId: null,
+    inspectorMode: 'task',
+    phase: 'P1_INGEST',
+    proposal: null,
+    searchQuery: '',
+    selectedNodeId: null,
+    settings: {
+      highContrastMode: false,
+      layoutDirection: 'TB',
+      renderEngine: 'svg',
+      showGrid: true,
+      showMinimap: true
+    },
+    viewTransform: {
+      x: 0,
+      y: 0,
+      zoom: 1
+    }
+  }
+  
+      at <anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:20:12)
+      at TransactionalModelStore.notify (/home/hatch/workspace/vdarchp-codex/src/store/ModelStore.ts:122:7)
+      at TransactionalModelStore.setPhase (/home/hatch/workspace/vdarchp-codex/src/store/ModelStore.ts:209:10)
+      at <anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:30:25)
+      at published (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:23:5)
+      at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:30:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Object],
+    expected: [Object],
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
