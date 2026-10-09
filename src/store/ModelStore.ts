@@ -117,8 +117,9 @@ class TransactionalModelStore {
 
   private notify(): void {
     this.persistState();
+    const newState = { ...this.state };
     for (const listener of this.listeners) {
-      listener(this.state);
+      listener(newState);
     }
   }
 
