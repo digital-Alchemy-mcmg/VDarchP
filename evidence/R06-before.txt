@@ -22,9 +22,9 @@
 test at tests/store.test.ts:1:6079
 ✖ R06: layout orientation recomputes node positions and notifies once (6.590882ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
-  
+
   0 !== 240
-  
+
       at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:140:10)
       at Test.runInAsyncScope (node:async_hooks:227:14)
       at Test.run (node:internal/test_runner/test:1397:25)

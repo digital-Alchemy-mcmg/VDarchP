@@ -22,13 +22,13 @@ test at tests/services.test.ts:1:982
 ✖ R05: Markdown arrows preserve source IDs and word "to" does not split names (6.382309ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
   + actual - expected
-  
+
     [
   +   'COMP-NODEA_-',
   -   'COMP-NODEA',
       'COMP-NODEB'
     ]
-  
+
       at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/services.test.ts:25:12)
       at async Test.run (node:internal/test_runner/test:1404:7)
       at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {

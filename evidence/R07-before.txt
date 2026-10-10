@@ -23,9 +23,9 @@
 test at tests/services.test.ts:1:1762
 ✖ R07: starter Mermaid diagrams retain every edge and inline node definition (6.730593ms)
   AssertionError [ERR_ASSERTION]: ecommerce must retain all documented connections
-  
+
   11 !== 12
-  
+
       at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/services.test.ts:40:12)
       at async Test.run (node:internal/test_runner/test:1404:7)
       at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {

@@ -21,10 +21,10 @@ test at tests/services.test.ts:1:251
 ✖ R04: checksum is a real SHA-256 of the established canonical topology payload (7.61399ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
   + actual - expected
-  
+
   + 'sha256:0x5b87efdd'
   - 'sha256:d63f821654e269e7dff98417628692f67003d0f614e3a889358c4d676c94739f'
-  
+
       at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/services.test.ts:15:10)
       at Test.runInAsyncScope (node:async_hooks:227:14)
       at Test.run (node:internal/test_runner/test:1397:25)

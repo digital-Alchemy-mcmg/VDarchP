@@ -20,7 +20,7 @@ test at tests/store.test.ts:1:3563
   AssertionError [ERR_ASSERTION]: undo must not restore pre-lock topology
   + actual - expected
   ... Skipped lines
-  
+
     {
       description: 'Parsed from Mermaid diagram containing 2 components and 1 connections.',
       edges: [
@@ -43,7 +43,7 @@ test at tests/store.test.ts:1:3563
   -   updatedAt: '2026-10-09T03:38:36.139Z',
   -   version: 2
     }
-  
+
       at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:87:10)
       at Test.runInAsyncScope (node:async_hooks:227:14)
       at Test.run (node:internal/test_runner/test:1397:25)

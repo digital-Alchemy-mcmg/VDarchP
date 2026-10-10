@@ -14,7 +14,7 @@ Running 1 test using 1 worker
   ✘  1 tests/browser/app.spec.js:41:1 › R01: settings starts closed and can repeatedly open and close (7.2s)
 
 
-  1) tests/browser/app.spec.js:41:1 › R01: settings starts closed and can repeatedly open and close 
+  1) tests/browser/app.spec.js:41:1 › R01: settings starts closed and can repeatedly open and close
 
     Error: expect(locator).not.toBeVisible() failed
 

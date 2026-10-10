@@ -14,7 +14,7 @@ Running 1 test using 1 worker
   ✘  1 tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error (9.6s)
 
 
-  1) tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error 
+  1) tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error
 
     Error: expect(locator).toContainText(expected) failed
 
@@ -40,4 +40,4 @@ Running 1 test using 1 worker
     Error Context: test-results/app-R03-cyclic-import-lock-d249d-does-not-throw-a-page-error/error-context.md
 
   1 failed
-    tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error 
+    tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error
