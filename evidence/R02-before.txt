@@ -1,0 +1,60 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (43.766407ms)
+✖ R02: locking is a history and transaction boundary; annotation undo remains usable (10.70908ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 323.442042
+
+✖ failing tests:
+
+test at tests/store.test.ts:1:3563
+✖ R02: locking is a history and transaction boundary; annotation undo remains usable (10.70908ms)
+  AssertionError [ERR_ASSERTION]: undo must not restore pre-lock topology
+  + actual - expected
+  ... Skipped lines
+
+    {
+      description: 'Parsed from Mermaid diagram containing 2 components and 1 connections.',
+      edges: [
+        {
+          id: 'edge-comp-a-comp-b',
+  ...
+      id: 'dag-1791517116138',
+  +   isLocked: false,
+  -   isLocked: true,
+  -   lockedAt: '2026-10-09T03:38:36.139Z',
+      nodes: [
+        {
+          artifacts: [
+            {
+              id: 'art-comp-a-spec',
+  ...
+      title: 'Ingested Architecture DAG',
+  +   updatedAt: '2026-10-09T03:38:36.138Z',
+  +   version: 1
+  -   updatedAt: '2026-10-09T03:38:36.139Z',
+  -   version: 2
+    }
+
+      at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:87:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Object],
+    expected: [Object],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

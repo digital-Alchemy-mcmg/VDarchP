@@ -1,0 +1,35 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (34.399094ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (1.927366ms)
+✖ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (4.594653ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 300.633893
+
+✖ failing tests:
+
+test at tests/store.test.ts:1:4807
+✖ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (4.594653ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:111:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /cycle/i,
+    operator: 'throws',
+    diff: 'simple'
+  }

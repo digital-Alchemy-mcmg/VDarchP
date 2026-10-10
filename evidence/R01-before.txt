@@ -1,0 +1,45 @@
+
+> react-example@0.0.0 test:browser
+> playwright test --grep R01
+
+[WebServer] (node:8620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8633) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8653) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/app.spec.js:41:1 › R01: settings starts closed and can repeatedly open and close (7.2s)
+
+
+  1) tests/browser/app.spec.js:41:1 › R01: settings starts closed and can repeatedly open and close
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  getByRole('heading', { name: 'Dashboard Settings', exact: true })
+    Expected: not visible
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "not toBeVisible" getByRole('heading', { name: 'Dashboard Settings', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Dashboard Settings', exact: true })
+        13 × locator resolved to <h2 class="text-base font-bold text-white">Dashboard Settings</h2>
+           - unexpected value "visible"
+
+
+      42 |   await page.goto('/');
+      43 |   const heading = page.getByRole('heading', { name: 'Dashboard Settings', exact: true });
+    > 44 |   await expect(heading).not.toBeVisible();
+         |                             ^
+      45 |   for (let i = 0; i < 2; i++) {
+      46 |     await page.getByTitle('Settings & Gemini API Key').click();
+      47 |     await expect(heading).toBeVisible();
+        at /home/hatch/workspace/vdarchp-codex/tests/browser/app.spec.js:44:29
+
+    Error Context: test-results/app-R01-settings-starts-cl-0621b-n-repeatedly-open-and-close/error-context.md
+
+  1 failed
+    tests/browser/app.spec.js:41:1 › R01: settings starts closed and can repeatedly open and close ─

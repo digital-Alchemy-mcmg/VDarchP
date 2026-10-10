@@ -1,0 +1,19 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ R04: checksum is a real SHA-256 of the established canonical topology payload (7.319608ms)
+✔ R05: Markdown arrows preserve source IDs and word "to" does not split names (4.011357ms)
+✔ R07: starter Mermaid diagrams retain every edge and inline node definition (2.66889ms)
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (32.683746ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (1.958313ms)
+✔ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (3.023543ms)
+✔ R06: layout orientation recomputes node positions and notifies once (1.482107ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 188.526095

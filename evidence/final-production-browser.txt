@@ -1,0 +1,16 @@
+
+> react-example@0.0.0 test:production
+> playwright test --config playwright.production.config.js
+
+[WebServer] (node:11436) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11449) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:11467) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/production.spec.js:5:1 › production artifact: assets, deep-link reload, ingestion, lock, annotation, persistence and export (4.4s)
+
+  1 passed (7.2s)
