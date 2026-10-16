@@ -1,0 +1,41 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ R04: checksum is a real SHA-256 of the established canonical topology payload (7.027899ms)
+✔ R05: Markdown arrows preserve source IDs and word "to" does not split names (3.812539ms)
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (29.501685ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (2.230331ms)
+✔ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (2.936832ms)
+✖ R06: layout orientation recomputes node positions and notifies once (6.590882ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 383.576332
+
+✖ failing tests:
+
+test at tests/store.test.ts:1:6079
+✖ R06: layout orientation recomputes node positions and notifies once (6.590882ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  0 !== 240
+
+      at TestContext.<anonymous> (/home/hatch/workspace/vdarchp-codex/tests/store.test.ts:140:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 240,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,18 @@
+
+> react-example@0.0.0 test
+> node --import tsx --test --test-isolation=none tests/*.test.ts
+
+✔ R04: checksum is a real SHA-256 of the established canonical topology payload (7.63421ms)
+✔ R05: Markdown arrows preserve source IDs and word "to" does not split names (4.188973ms)
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (31.537264ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (2.392905ms)
+✔ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (2.963142ms)
+✔ R06: layout orientation recomputes node positions and notifies once (1.451071ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 354.19055

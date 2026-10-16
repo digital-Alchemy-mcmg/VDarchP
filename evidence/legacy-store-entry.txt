@@ -1,0 +1,12 @@
+✔ C08: repeated UI, topology, annotation, history and transaction actions publish snapshots (38.875449ms)
+✔ R02: locking is a history and transaction boundary; annotation undo remains usable (2.425494ms)
+✔ R03: reverse dependencies, dangling endpoints and cyclic merges reject atomically; lock checks imports (4.349274ms)
+✔ R06: layout orientation recomputes node positions and notifies once (1.876029ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 65.016986

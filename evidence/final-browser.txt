@@ -1,0 +1,18 @@
+
+> react-example@0.0.0 test:browser
+> playwright test
+
+[WebServer] (node:10784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:10797) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:10815) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/app.spec.js:12:1 › C08: actual App rerenders after repeated phase and nested graph mutations (2.7s)
+  ✓  2 tests/browser/app.spec.js:41:1 › R01: settings starts closed and can repeatedly open and close (2.4s)
+  ✓  3 tests/browser/app.spec.js:53:1 › R03: cyclic import lock failure is visible and does not throw a page error (2.9s)
+
+  3 passed (12.2s)
